@@ -1,10 +1,20 @@
-# Greasemonkey Script
-Reichert die Amazon Buch Detail Seite mit Informationen zur Verfügbarkeit aus der stadtbibliothek-leipzig.de an (Enriches amazon book detaily page by availability information from stadtbibliothek-leipzig.de)
+# Install
+If you have [greasemonkey addon](https://addons.mozilla.org/de/firefox/addon/greasemonkey/) for firefox [just click the link](
+https://raw.githubusercontent.com/timguy/greasemonkey_Amazon-mit-stadtbibliothek-leipzig.de/master/Amazon_mit_stadtbibliothek-leipzig.de.user.js)
+
+Should look like this later on:
 
 ![Screenshot showing library information incldued in amazon web page](screenshotAmazonLeipzigGM.png?raw=true "Screenshot")
 
 # Further
-Only tested with [greasemonkey](https://addons.mozilla.org/de/firefox/addon/greasemonkey/)
+- Only tested with greasemonkey, may work with tampermonkey in chrome
+- If you can improve, please do.
+- for errors or problems open an issue
 
-If you can improve, please do.
+# Possible improvements
+- make it possible to save a list for your next library visit
+- ask the library for a better interface / direkt API instead to parse cookies
+- maybe restrict for some library locations
+- not only check on book detail page but already for multiple books in overview page
+- ask only once for the cookie and afterwars only when needed
 
