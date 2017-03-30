@@ -1,6 +1,6 @@
 # Install
 If you have [greasemonkey addon](https://addons.mozilla.org/de/firefox/addon/greasemonkey/) for firefox [just click the link](
-https://raw.githubusercontent.com/timguy/greasemonkey_Amazon-mit-stadtbibliothek-leipzig.de/master/Amazon_mit_stadtbibliothek-leipzig.de.user.js)
+https://raw.githubusercontent.com/timguy/greasemonkey_Amazon-mit-stadtbibliothek-leipzig.de/master/amazon_mit_stadtbibliothek-leipzig.de.user.js)
 
 Should look like this later on:
 
