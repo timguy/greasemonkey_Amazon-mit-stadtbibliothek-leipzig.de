@@ -6,7 +6,7 @@
 // @include       *.amazon.*/dp/*
 // @include       *.amazon.*/gp/product*
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
-// @grant       GM_xmlhttpRequest
+// @grant         GM.xmlHttpRequest
 // @author timguy
 // @license MIT
 // @noframes    
@@ -14,7 +14,7 @@
 // ==/UserScript==
 addOwnHTML();
 updateProgressBar(10);
-var isbn = getIsbn(window.content.location.href);
+var isbn = getIsbn(window.location.href);
 console.log("Parsed amazon ISBN:" + isbn);
 updateProgressBar(20);
 var libraryStartPage = "https://webopac.stadtbibliothek-leipzig.de/webOPACClient/start.do";
@@ -27,6 +27,7 @@ getCookie(libraryStartPage);
 updateProgressBar(30);
 function continueAfterCookie(respHeader) {
   updateProgressBar(40);
+  console.log('try to parse respHeader');
   var cookieHeader = parseCookieHeaders(respHeader);
   console.log('response received  getCookie: \t jSessionId: ' + cookieHeader.strJSessionID + '\t strUserSessionID: ' + cookieHeader.strUserSessionID);
   callSearch(libraryDetailSearchPage, cookieHeader);
@@ -37,7 +38,7 @@ function callSearch(libraryDetailSearchPage, cookieHeader) {
   libraryDetailSearchPage = libraryDetailSearchPage.replace('USERSESSIONIDplaceholder', cookieHeader.strUserSessionID);
   libraryDetailSearchPage = libraryDetailSearchPage.replace('ISBN_placeholder', isbn);
   console.log('start call libraryDetailSearchPage:' + libraryDetailSearchPage);
-  GM_xmlhttpRequest({
+  GM.xmlHttpRequest({
     method: 'GET',
     url: libraryDetailSearchPage,
     headers: {
@@ -68,15 +69,15 @@ function callSearch(libraryDetailSearchPage, cookieHeader) {
 
 function getCookie(libraryStartPage) {
   console.log('start call:' + libraryStartPage);
-  GM_xmlhttpRequest({
+  GM.xmlHttpRequest({
     method: 'GET',
     url: libraryStartPage,
     headers: {
       'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey/0.3',
-      'Accept': 'application/atom+xml,application/xml,text/xml',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
     },
     onload: function (response) {
-      //console.log(response.responseHeaders);
+      console.log('bibo response: ' + response.responseHeaders);
       continueAfterCookie(response.responseHeaders);
     }
   });
@@ -108,9 +109,14 @@ function updateProgressBar(value)
 };
 //parse cookie and session details
 function parseCookieHeaders(strAllRequestHeaders) {
+  console.log('all Request Headers: ' + strAllRequestHeaders);
   var strSetCookieHeader = strAllRequestHeaders.match(/Set-Cookie: ([\s\S]*?)Keep-Alive/) [1];
   var strUserSessionID = strSetCookieHeader.match(/USERSESSIONID=(.*)/) [1];
   var strJSessionID = strSetCookieHeader.match(/JSESSIONID=(.*?);/) [1];
+  
+  if(strSetCookieHeader == null){
+  console.error("No Cookie found in response");
+  }
   return {
     strSetCookieHeader: strSetCookieHeader,
     strUserSessionID: strUserSessionID,
