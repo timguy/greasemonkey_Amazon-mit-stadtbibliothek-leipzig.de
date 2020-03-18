@@ -73,11 +73,11 @@ function getCookie(libraryStartPage) {
     method: 'GET',
     url: libraryStartPage,
     headers: {
-      'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey/0.3',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+      'User-agent': 'Mozilla/5.0 Greasemonkey',
+      'Accept': '*/*',
+      'Host': 'webopac.stadtbibliothek-leipzig.de'
     },
     onload: function (response) {
-      console.log('bibo response: ' + response.responseHeaders);
       continueAfterCookie(response.responseHeaders);
     }
   });
@@ -110,13 +110,18 @@ function updateProgressBar(value)
 //parse cookie and session details
 function parseCookieHeaders(strAllRequestHeaders) {
   console.log('all Request Headers: ' + strAllRequestHeaders);
-  var strSetCookieHeader = strAllRequestHeaders.match(/Set-Cookie: ([\s\S]*?)Keep-Alive/) [1];
+  var strSetCookieHeader = strAllRequestHeaders.match(/Set-Cookie: ([\s\S]*?)Transfer-Encoding/) [1]; //Should be improved if order of headers change
+   console.log('parsed 1 finished ' + strSetCookieHeader);
   var strUserSessionID = strSetCookieHeader.match(/USERSESSIONID=(.*)/) [1];
+  console.log('parsed 2 finished ' + strUserSessionID);
   var strJSessionID = strSetCookieHeader.match(/JSESSIONID=(.*?);/) [1];
+  console.log('parsed 3 finished ' + strJSessionID);
   
   if(strSetCookieHeader == null){
-  console.error("No Cookie found in response");
+  	console.error("No Cookie found in response");
   }
+  
+  console.log('parseCookieHeaders finished ' + strSetCookieHeader);
   return {
     strSetCookieHeader: strSetCookieHeader,
     strUserSessionID: strUserSessionID,
